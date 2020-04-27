@@ -1,0 +1,23 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: vhr
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/vhr?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
+    default-property-inclusion: always
+  rabbitmq:
+    username: guest
+    password: guest
+    host: 192.168.124.12
+    publisher-returns: true
+    publisher-confirms: true
+logging:
+  level:
+    com.pactera.sms.vhr.mapper: debug

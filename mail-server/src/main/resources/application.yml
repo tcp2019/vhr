@@ -1,0 +1,33 @@
+server:
+  port: 8081
+spring:
+  mail:
+#    host: smtp.qq.com
+#    protocol: smtp
+#    username: 952021330@qq.com
+#    password: fytolxanrnwkbdja
+#    port: 587
+    host: 10.20.102.13
+    protocol: smtp
+    username: webservice
+    password: web123
+    default-encoding: UTF-8
+    properties:
+      mail:
+        debug: true
+        stmp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+  rabbitmq:
+    username: guest
+    password: guest
+    host: 192.168.124.12
+    listener:
+      simple:
+        acknowledge-mode: manual
+        prefetch: 100
+
+  redis:
+    host: 192.168.124.12
+    port: 6379
+    database: 0

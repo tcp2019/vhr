@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pactera.sms.vhr.mapper.SalaryMapper">
+    <resultMap id="BaseResultMap" type="com.pactera.sms.vhr.entity.Salary">
+        <!--
+             private Integer id;
+    private Integer basicSalary;
+    private Integer bonus;
+    private Integer lunchSalary;
+    private Integer trafficSalary;
+    private Integer allSalary;
+    private Integer pensionBase;
+    private Float pensionPer;
+    private Date createDate;
+    private Integer medicalBase;
+    private Float medicalPer;
+    private Integer accumulationFundBase;
+    private Float accumulationFundPer;
+    private String name;
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="basicSalary" property="basicSalary" jdbcType="INTEGER"/>
+        <result column="bonus" property="bonus" jdbcType="INTEGER"/>
+        <result column="lunchSalary" property="lunchSalary" jdbcType="INTEGER"/>
+        <result column="trafficSalary" property="trafficSalary" jdbcType="INTEGER"/>
+        <result column="allSalary" property="allSalary" jdbcType="INTEGER"/>
+        <result column="pensionBase" property="pensionBase" jdbcType="INTEGER"/>
+        <result column="pensionPer" property="pensionPer" jdbcType="FLOAT"/>
+        <result column="medicalPer" property="medicalPer" jdbcType="FLOAT"/>
+        <result column="accumulationFundPer" property="accumulationFundPer" jdbcType="FLOAT"/>
+        <result column="medicalBase" property="medicalBase" jdbcType="INTEGER"/>
+        <result column="accumulationFundBase" property="accumulationFundBase" jdbcType="INTEGER"/>
+        <result column="createDate" property="createDate" jdbcType="DATE"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="getSalaryList" resultMap="BaseResultMap">
+        select * from salary
+    </select>
+
+    <delete id="deleteSalarySobById">
+        delete from salary where id = #{id};
+    </delete>
+
+    <insert id="updateEmpSalary">
+        REPLACE INTO empsalary (eid, sid)
+        VALUES
+        (#{eid}, #{sid});
+    </insert>
+</mapper>

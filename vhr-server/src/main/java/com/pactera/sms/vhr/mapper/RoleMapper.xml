@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pactera.sms.vhr.mapper.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.pactera.sms.vhr.entity.Role">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="nameZh" property="nameZh" jdbcType="CHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        t1.id, t1.name, t1.nameZh
+    </sql>
+    <select id="getRolesByHrId" resultType="com.pactera.sms.vhr.entity.Role" parameterType="integer">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM hr_role t2
+        LEFT JOIN role t1 on t2.rid = t1.id
+        <if test="id!=null">
+            where t2.hrid =#{id}
+        </if>
+
+    </select>
+    <select id="getRolesByMenuId" resultType="com.pactera.sms.vhr.entity.Role">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM menu_role t2
+        LEFT JOIN role t1 on t2.rid = t1.id
+        where t2.mid =#{id}
+    </select>
+
+    <delete id="deleteRoleByHrId">
+        delete from hr_role where hrid = #{hrId}
+    </delete>
+
+    <insert id="addHrRoles">
+        insert into hr_role (hrid,rid)values
+        <foreach collection="rids" item="rid" separator=",">
+            (#{hrId},#{rid})
+        </foreach>
+    </insert>
+</mapper>

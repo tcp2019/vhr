@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pactera.sms.vhr.mapper.MailSendLogMapper">
+    <!--
+         /**
+     * 生成的uuid 消息id
+     */
+    private String msgId;
+    private Integer empId;
+    /**
+     * 消息的发送状态
+     * 0:发送中
+     * 1：发送成功
+     * 2:发送失败
+     */
+    private Integer status;
+    /**
+     * 路由key
+     */
+    private String routeKey;
+    /**
+     *
+     */
+    private String exChange;
+    private Integer count;
+    private Date tryTime;
+    private Date createTime;
+    private Date updateTime;
+    -->
+    <resultMap id="BaseResultMap" type="com.pactera.sms.vhr.entity.MailSendLog">
+        <id column="msgId" property="msgId" jdbcType="VARCHAR"/>
+        <result column="empId" property="empId" jdbcType="INTEGER"/>
+        <result column="routeKey" property="routeKey" jdbcType="VARCHAR"/>
+        <result column="exchange" property="exChange" jdbcType="VARCHAR"/>
+        <result column="tryTime" property="tryTime" jdbcType="DATE"/>
+        <result column="createTime" property="createTime" jdbcType="DATE"/>
+        <result column="updateTime" property="updateTime" jdbcType="DATE"/>
+    </resultMap>
+    <insert id="insert">
+        INSERT INTO mail_send_log (
+        msgId,
+        empId,
+        routeKey,
+        exchange,
+        tryTime,
+        createTime
+        )
+        VALUES
+        (
+        #{msgId},#{empId},#{routeKey},#{exChange},#{tryTime},#{createTime});
+    </insert>
+
+    <select id="getMailSendLogByStatus" resultMap="BaseResultMap">
+        SELECT
+        *
+        FROM
+        mail_send_log
+        WHERE
+        tryTime &lt; sysdate()
+        AND `status` = #{status}
+    </select>
+
+    <update id="updateMailSendLogStatusByMsgId">
+        UPDATE mail_send_log
+        SET `status` = #{status},
+        updateTime=now()
+        WHERE
+        msgId = #{msgId}
+    </update>
+
+    <update id="updateMailSendLogCount">
+        UPDATE mail_send_log
+        SET count = count+1,
+        updateTime=now()
+        WHERE
+        msgId = #{msgId}
+    </update>
+</mapper>

@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pactera.sms.vhr.mapper.EmpMapper">
+    <!--
+        private Integer id;
+    private String name;
+    private String gender;
+    //身份证
+    private String idCard;
+    //婚姻状况
+    private String webLock;
+    //民族
+    private Integer nationId;
+    private Nation nation;
+    //籍贯
+    private String nativePlace;
+    //政治面貌
+    private Integer politicId;
+    private PoliticsStatus politicsStatus;
+    private String email;
+    private String phone;
+    private String address;
+    //所属部门
+    private Integer departmentId;
+    private Department department;
+    //职称id
+    private Integer jobLevelId;
+    private JobLevel jobLevel;
+    //职位id
+    private Integer posId;
+    private Position position;
+    //聘用形式
+    private String engageForm;
+    //最高学历
+    private String tiptopDegree;
+    //所属专业
+    private String specialty;
+    //毕业院校
+    private String school;
+    //入职日期
+    private String beginDate;
+    //在职状态
+    private String workState;
+    //工号
+    private String workId;
+    //合同期限
+    private Double contractTerm;
+    //    @DateTimeFormat("yyyy-MM-dd")
+    private Date birthday;
+    //转正日期
+    private Date conversionTime;
+    //离职日期
+    private Date notWorkDate;
+    //合同起始日期
+    private Date beginContract;
+    //合同终止日期
+    private Date endContract;
+    //工龄
+    private Integer workAge;
+    -->
+    <resultMap id="BaseResultMap" type="com.pactera.sms.vhr.entity.Emp">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="VARCHAR"/>
+        <result column="idCard" property="idCard" jdbcType="VARCHAR"/>
+        <result column="wedlock" property="wedLock" jdbcType="CHAR"/>
+        <result column="nativePlace" property="nativePlace" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="engageForm" property="engageForm" jdbcType="VARCHAR"/>
+        <result column="tiptopDegree" property="tiptopDegree" jdbcType="CHAR"/>
+        <result column="specialty" property="specialty" jdbcType="VARCHAR"/>
+        <result column="school" property="school" jdbcType="VARCHAR"/>
+        <result column="beginDate" property="beginDate" jdbcType="DATE"/>
+        <result column="workState" property="workState" jdbcType="CHAR"/>
+        <result column="workId" property="workId" jdbcType="CHAR"/>
+        <result column="contractTerm" property="contractTerm" jdbcType="DOUBLE"/>
+        <result column="birthday" property="birthday" jdbcType="DATE"/>
+        <result column="conversionTime" property="conversionTime" jdbcType="DATE"/>
+        <result column="notWorkDate" property="notWorkDate" jdbcType="DATE"/>
+        <result column="beginContract" property="beginContract" jdbcType="DATE"/>
+        <result column="endContract" property="endContract" jdbcType="DATE"/>
+        <result column="workAge" property="workAge" jdbcType="INTEGER"/>
+        <result column="nationId" property="nationId" jdbcType="INTEGER"/>
+        <result column="politicId" property="politicId" jdbcType="INTEGER"/>
+        <result column="departmentId" property="departmentId" jdbcType="INTEGER"/>
+        <result column="jobLevelId" property="jobLevelId" jdbcType="INTEGER"/>
+        <result column="posId" property="positionId" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="EmpListByPageWithSalary" type="com.pactera.sms.vhr.entity.Emp" extends="BaseResultMap">
+        <association property="salary" javaType="com.pactera.sms.vhr.entity.Salary">
+            <id column="sid" property="id" jdbcType="INTEGER"/>
+            <result column="sbasicSalary" property="basicSalary" jdbcType="INTEGER"/>
+            <result column="sbonus" property="bonus" jdbcType="INTEGER"/>
+            <result column="slunchSalary" property="lunchSalary" jdbcType="INTEGER"/>
+            <result column="strafficSalary" property="trafficSalary" jdbcType="INTEGER"/>
+            <result column="sallSalary" property="allSalary" jdbcType="INTEGER"/>
+            <result column="spensionBase" property="pensionBase" jdbcType="INTEGER"/>
+            <result column="spensionPer" property="pensionPer" jdbcType="FLOAT"/>
+            <result column="smedicalPer" property="medicalPer" jdbcType="FLOAT"/>
+            <result column="saccumulationFundPer" property="accumulationFundPer" jdbcType="FLOAT"/>
+            <result column="smedicalBase" property="medicalBase" jdbcType="INTEGER"/>
+            <result column="saccumulationFundBase" property="accumulationFundBase" jdbcType="INTEGER"/>
+            <result column="screateDate" property="createDate" jdbcType="DATE"/>
+            <result column="sname" property="name" jdbcType="VARCHAR"/>
+        </association>
+        <association property="department" javaType="com.pactera.sms.vhr.entity.Department">
+            <result column="dname" property="name" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+    <resultMap id="AllEmpListInfo" type="com.pactera.sms.vhr.entity.Emp" extends="BaseResultMap">
+        <association property="department" javaType="com.pactera.sms.vhr.entity.Department">
+            <id column="did" property="id" jdbcType="INTEGER"/>
+            <result column="dname" property="name" jdbcType="VARCHAR"/>
+        </association>
+        <association property="jobLevel" javaType="com.pactera.sms.vhr.entity.JobLevel">
+            <id column="jid" property="id" jdbcType="INTEGER"/>
+            <result column="jname" property="name" jdbcType="VARCHAR"/>
+        </association>
+        <association property="nation" javaType="com.pactera.sms.vhr.entity.Nation">
+            <id column="nid" property="id" jdbcType="INTEGER"/>
+            <result column="nname" property="name" jdbcType="VARCHAR"/>
+        </association>
+        <association property="politicsStatus" javaType="com.pactera.sms.vhr.entity.PoliticsStatus">
+            <id column="pid" property="id" jdbcType="INTEGER"/>
+            <result column="pname" property="name" jdbcType="VARCHAR"/>
+        </association>
+        <association property="position" javaType="com.pactera.sms.vhr.entity.Position">
+            <id column="posid" property="id" jdbcType="INTEGER"/>
+            <result column="posname" property="name" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+
+    </sql>
+    <select id="getCount" resultType="Long">
+        select count(1) from employee
+        <where>
+            <if test="emp!=null">
+                <if test="emp.name!=null ">
+                    and name like concat("%",#{emp.name},"%")
+                </if>
+                <if test="emp.politicId!=null">
+                    and politicId = #{emp.politicId}
+                </if>
+                <if test="emp.nationId!=null ">
+                    and nationId = #{emp.nationId}
+                </if>
+                <if test="emp.positionId!=null  ">
+                    and posId = #{emp.positionId}
+                </if>
+                <if test="emp.departmentId!=null  ">
+                    and departmentId = #{emp.departmentId}
+                </if>
+                <if test="emp.jobLevelId!=null  ">
+                    and jobLevelId = #{emp.jobLevelId}
+                </if>
+                <if test="emp.engageForm!=null  ">
+                    and engageForm = #{emp.engageForm}
+                </if>
+            </if>
+            <if test="beginDateScope!=null">
+                and beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+            </if>
+        </where>
+
+    </select>
+    <select id="getEmpList" resultMap="AllEmpListInfo">
+        select
+        e.*,n.id as nid,
+        n.name as nname,
+        d.id as did,
+        d.name as dname,
+        p.id as pid,
+        p.name as pname,
+        pos.id as posid,
+        pos.name as posname,
+        j.id as jid,
+        j.name as jname
+        from employee e,nation n,department d,politicsstatus p,position pos,joblevel j
+        where e.nationId = n.id and e.departmentId = d.id and e.politicId = p.id and e.posId = pos.id
+        and e.jobLevelId = j.id
+        <if test="emp!=null">
+            <if test="emp.name!=null and emp.name!='' ">
+                and e.name like concat("%",#{emp.name},"%")
+            </if>
+            <if test="emp.politicId!=null ">
+                and e.politicId = #{emp.politicId}
+            </if>
+            <if test="emp.nationId!=null">
+                and e.nationId = #{emp.nationId}
+            </if>
+            <if test="emp.positionId!=null ">
+                and e.posId = #{emp.positionId}
+            </if>
+            <if test="emp.departmentId!=null ">
+                and e.departmentId = #{emp.departmentId}
+            </if>
+            <if test="emp.jobLevelId!=null ">
+                and e.jobLevelId = #{emp.jobLevelId}
+            </if>
+            <if test="emp.engageForm!=null ">
+                and e.engageForm = #{emp.engageForm}
+            </if>
+        </if>
+        <if test="beginDateScope!=null">
+            and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+        </if>
+
+        limit #{page},#{size}
+    </select>
+    <select id="getPositionList" resultType="com.pactera.sms.vhr.entity.Position">
+        select id,name,createDate,enabled from position;
+    </select>
+    <select id="getJobLevels" resultType="com.pactera.sms.vhr.entity.JobLevel">
+        select id,name,titleLevel,createDate,enabled from joblevel;
+    </select>
+    <select id="getPoliticsStatus" resultType="com.pactera.sms.vhr.entity.PoliticsStatus">
+        select id,name from politicsstatus;
+    </select>
+    <select id="getDepartmentList" resultType="com.pactera.sms.vhr.entity.Department">
+        select id,name,parentId,depPath,enabled,isparent from department;
+    </select>
+    <select id="getNationList" resultType="com.pactera.sms.vhr.entity.Nation">
+        select id,name from nation;
+    </select>
+    <select id="getMaxWorkID" resultType="String">
+        select workID from employee order by id desc limit 0,1;
+    </select>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id">
+        insert into employee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">
+                id,
+            </if>
+            <if test="name!=null">
+                name,
+            </if>
+            <if test="gender!=null">
+                gender,
+            </if>
+            <if test="idCard!=null">
+                idCard,
+            </if>
+            <if test="wedLock!=null">
+                wedlock,
+            </if>
+            <if test="nativePlace!=null">
+                nativePlace,
+            </if>
+            <if test="email!=null">
+                email,
+            </if>
+            <if test="phone!=null">
+                phone,
+            </if>
+            <if test="address!=null">
+                address,
+            </if>
+            <if test="engageForm!=null">
+                engageForm,
+            </if>
+            <if test="tiptopDegree!=null">
+                tiptopDegree,
+            </if>
+            <if test="specialty!=null">
+                specialty,
+            </if>
+            <if test="school!=null">
+                school,
+            </if>
+            <if test="beginDate!=null">
+                beginDate,
+            </if>
+            <if test="workState!=null">
+                workState,
+            </if>
+            <if test="workId!=null">
+                workId,
+            </if>
+            <if test="contractTerm!=null">
+                contractTerm,
+            </if>
+            <if test="birthday!=null">
+                birthday,
+            </if>
+            <if test="conversionTime!=null">
+                conversionTime,
+            </if>
+            <if test="notWorkDate!=null">
+                notWorkDate,
+            </if>
+            <if test="beginContract!=null">
+                beginContract,
+            </if>
+            <if test="endContract!=null">
+                endContract,
+            </if>
+            <if test="workAge!=null">
+                workAge,
+            </if>
+            <if test="nationId!=null">
+                nationId,
+            </if>
+            <if test="politicId!=null">
+                politicId,
+            </if>
+            <if test="departmentId!=null">
+                departmentId,
+            </if>
+            <if test="jobLevelId!=null">
+                jobLevelId,
+            </if>
+            <if test="positionId!=null">
+                posId,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name!=null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="gender!=null">
+                #{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="idCard!=null">
+                #{idCard,jdbcType=VARCHAR},
+            </if>
+            <if test="wedLock!=null">
+                #{wedLock,jdbcType=CHAR},
+            </if>
+            <if test="nativePlace!=null">
+                #{nativePlace,jdbcType=VARCHAR},
+            </if>
+            <if test="email!=null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phone!=null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="address!=null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="engageForm!=null">
+                #{engageForm,jdbcType=VARCHAR},
+            </if>
+            <if test="tiptopDegree!=null">
+                #{tiptopDegree,jdbcType=VARCHAR},
+            </if>
+            <if test="specialty!=null">
+                #{specialty,jdbcType=VARCHAR},
+            </if>
+            <if test="school!=null">
+                #{school,jdbcType=VARCHAR},
+            </if>
+            <if test="beginDate!=null">
+                #{beginDate,jdbcType=DATE},
+            </if>
+            <if test="workState!=null">
+                #{workState,jdbcType=CHAR},
+            </if>
+            <if test="workId!=null">
+                #{workId,jdbcType=VARCHAR},
+            </if>
+            <if test="contractTerm!=null">
+                #{contractTerm,jdbcType=DOUBLE},
+            </if>
+            <if test="birthday!=null">
+                #{birthday,jdbcType=DATE},
+            </if>
+            <if test="conversionTime!=null">
+                #{conversionTime,jdbcType=DATE},
+            </if>
+            <if test="notWorkDate!=null">
+                #{notWorkDate,jdbcType=DATE},
+            </if>
+            <if test="beginContract!=null">
+                #{beginContract,jdbcType=DATE},
+            </if>
+            <if test="endContract!=null">
+                #{endContract,jdbcType=DATE},
+            </if>
+            <if test="workAge!=null">
+                #{workAge,jdbcType=INTEGER},
+            </if>
+            <if test="nationId!=null">
+                #{nationId,jdbcType=INTEGER},
+            </if>
+            <if test="politicId!=null">
+                #{politicId,jdbcType=INTEGER},
+            </if>
+            <if test="departmentId!=null">
+                #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="jobLevelId!=null">
+                #{jobLevelId,jdbcType=INTEGER},
+            </if>
+            <if test="positionId!=null">
+                #{positionId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateSelective">
+        update employee set
+        <trim suffixOverrides=",">
+            <if test="name!=null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="gender!=null">
+                gender = #{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="idCard!=null">
+                idCard = #{idCard,jdbcType=VARCHAR},
+            </if>
+            <if test="wedLock!=null">
+                wedlock = #{wedLock,jdbcType=CHAR},
+            </if>
+            <if test="nativePlace!=null">
+                nativePlace = #{nativePlace,jdbcType=VARCHAR},
+            </if>
+            <if test="email!=null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phone!=null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="address!=null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="engageForm!=null">
+                engageForm = #{engageForm,jdbcType=VARCHAR},
+            </if>
+            <if test="tiptopDegree!=null">
+                tiptopDegree = #{tiptopDegree,jdbcType=VARCHAR},
+            </if>
+            <if test="specialty!=null">
+                specialty = #{specialty,jdbcType=VARCHAR},
+            </if>
+            <if test="school!=null">
+                school = #{school,jdbcType=VARCHAR},
+            </if>
+            <if test="beginDate!=null">
+                beginDate = #{beginDate,jdbcType=DATE},
+            </if>
+            <if test="workState!=null">
+                workState = #{workState,jdbcType=VARCHAR},
+            </if>
+            <if test="workId!=null">
+                workId = #{workId,jdbcType=VARCHAR},
+            </if>
+            <if test="contractTerm!=null">
+                contractTerm = #{contractTerm,jdbcType=DOUBLE},
+            </if>
+            <if test="birthday!=null">
+                birthday = #{birthday,jdbcType=DATE},
+            </if>
+            <if test="conversionTime!=null">
+                conversionTime = #{conversionTime,jdbcType=DATE},
+            </if>
+            <if test="notWorkDate!=null">
+                notWorkDate = #{notWorkDate,jdbcType=DATE},
+            </if>
+            <if test="beginContract!=null">
+                beginContract = #{beginContract,jdbcType=DATE},
+            </if>
+            <if test="endContract!=null">
+                endContract = #{endContract,jdbcType=DATE},
+            </if>
+            <if test="workAge!=null">
+                workAge = #{workAge,jdbcType=INTEGER},
+            </if>
+            <if test="nationId!=null">
+                nationId = #{nationId,jdbcType=INTEGER},
+            </if>
+            <if test="politicId!=null">
+                politicId = #{politicId,jdbcType=INTEGER},
+            </if>
+            <if test="departmentId!=null">
+                departmentId = #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="jobLevelId!=null">
+                jobLevelId = #{jobLevelId,jdbcType=INTEGER},
+            </if>
+            <if test="positionId!=null">
+                posId = #{positionId,jdbcType=INTEGER},
+            </if>
+        </trim>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteEmp">
+        delete from employee where id = #{id}
+    </delete>
+
+    <select id="getEmpListByPageWithSalary" resultMap="EmpListByPageWithSalary">
+        SELECT
+        t1.id,
+        t1.`name`,
+        t1.workID,
+        t1.email,
+        t1.phone,
+        t4.`name`,
+        t3.id AS sid,
+        t3.accumulationFundBase AS saccumulationFundBase,
+        t3.accumulationFundPer AS saccumulationFundPer,
+        t3.allSalary AS sallSalary,
+        t3.basicSalary AS sbasicSalary,
+        t3.bonus AS sbonus,
+        t3.createDate AS screateDate,
+        t3.lunchSalary AS slunchSalary,
+        t3.medicalBase AS smedicalBase,
+        t3.medicalPer AS smedicalPer,
+        t3.`name` AS sname,
+        t3.pensionBase AS spensionBase,
+        t3.pensionPer AS spensionPer,
+        t3.trafficSalary AS strafficSalary,
+        t4.`name` AS dname
+        FROM
+        employee t1
+        LEFT JOIN empsalary t2 ON t1.id = t2.eid
+        LEFT JOIN salary t3 ON t2.sid = t3.id
+        LEFT JOIN department t4 ON t1.departmentId = t4.id
+        LIMIT #{page},#{size}
+    </select>
+    <select id="getEmpById" resultMap="AllEmpListInfo">
+        select
+        e.*,n.id as nid,
+        n.name as nname,
+        d.id as did,
+        d.name as dname,
+        p.id as pid,
+        p.name as pname,
+        pos.id as posid,
+        pos.name as posname,
+        j.id as jid,
+        j.name as jname
+        from employee e,nation n,department d,politicsstatus p,position pos,joblevel j
+        where e.nationId = n.id and e.departmentId = d.id and e.politicId = p.id and e.posId = pos.id
+        and e.jobLevelId = j.id and e.id = #{empId}
+    </select>
+</mapper>

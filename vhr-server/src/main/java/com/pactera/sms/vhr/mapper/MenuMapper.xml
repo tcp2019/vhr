@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pactera.sms.vhr.mapper.MenuMapper">
+    <resultMap id="BaseResultMap" type="com.pactera.sms.vhr.entity.Menu">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="path" property="path" jdbcType="VARCHAR"/>
+        <result column="component" property="component" jdbcType="VARCHAR"/>
+        <result column="iconCls" property="iconCls" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="parentId" property="parentId" jdbcType="INTEGER"/>
+        <result column="enabled" property="enabled" jdbcType="BIT"/>
+        <association property="meta" javaType="com.pactera.sms.vhr.entity.Meta">
+            <result column="keepAlive" property="keepAlive" jdbcType="BIT"/>
+            <result column="requireAuth" property="requireAuth" jdbcType="BIT"/>
+        </association>
+    </resultMap>
+    <resultMap id="Menus2" type="com.pactera.sms.vhr.entity.Menu" extends="BaseResultMap">
+        <collection property="children" ofType="com.pactera.sms.vhr.entity.Menu">
+            <id column="id2" property="id" jdbcType="INTEGER"/>
+            <result column="url2" property="url" jdbcType="VARCHAR"/>
+            <result column="path2" property="path" jdbcType="VARCHAR"/>
+            <result column="component2" property="component" jdbcType="VARCHAR"/>
+            <result column="iconCls2" property="iconCls" jdbcType="VARCHAR"/>
+            <result column="name2" property="name" jdbcType="VARCHAR"/>
+            <result column="parentId2" property="parentId" jdbcType="INTEGER"/>
+            <result column="enabled2" property="enabled" jdbcType="BIT"/>
+            <association property="meta" javaType="com.pactera.sms.vhr.entity.Meta">
+                <result column="keepAlive2" property="keepAlive" jdbcType="BIT"/>
+                <result column="requireAuth2" property="requireAuth" jdbcType="BIT"/>
+            </association>
+        </collection>
+    </resultMap>
+
+    <resultMap id="MenuWithChildren" type="com.pactera.sms.vhr.entity.Menu" extends="BaseResultMap">
+        <id column="id1" property="id"/>
+        <result column="name1" property="name"/>
+        <collection property="children" ofType="com.pactera.sms.vhr.entity.Menu">
+            <id column="id2" property="id"/>
+            <result column="name2" property="name"/>
+            <collection property="children" ofType="com.pactera.sms.vhr.entity.Menu">
+                <id column="id3" property="id"/>
+                <result column="name3" property="name"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        t1.id, t1.name, t1.path,t1.component,t1.iconCls,t1.keepAlive,t1.requireAuth,t1.parentId,t1.enabled,t1.url
+    </sql>
+    <select id="getMenuListByHrId" resultMap="Menus2">
+        select DISTINCT
+        t1.*, t2.`id` AS id2,
+        t2.`component` AS component2,
+        t2.`enabled` AS enabled2,
+        t2.`iconCls` AS iconCls2,
+        t2.`keepAlive` AS keepAlive2,
+        t2.`name` AS name2,
+        t2.`parentId` AS parentId2,
+        t2.`requireAuth` AS requireAuth2,
+        t2.`path` AS path2
+        from menu t1,menu t2,hr_role t3,menu_role t4
+        where t1.id = t2.parentId
+        and t3.rid = t4.rid and t2.id = t4.mid and t3.hrid = #{id} ORDER BY t1.id,t2.id
+    </select>
+</mapper>
